@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animating Slider</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            color: #333;
+            font-family: 'open sans', arial;
+        }
+        img {
+            display: block;
+            max-width: 100%;
+        }
+        .slider-wrapper {
+            position: relative;
+            overflow: hidden;
+        }
+        /* .slider-wrapper::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+        } */
+        .slider {
+            display: flex;
+            width: 100%;
+            transition: transform 0.3s;
+        }
+        .slide {
+            padding: 150px 7vw;
+            color: #fff;
+            min-width: 100%;
+            position: relative;
+            box-sizing: border-box;
+        }
+        .slider .text {
+            position: relative;
+            z-index: 3;
+        }
+        .slider h2 {
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+            margin-top: 0;
+        }
+        .slider button {
+            background: hsl(210, 63%, 54%);
+            color: inherit;
+            border: none;
+            width: 140px;
+            padding: 0.675em 1.25em;
+            border-radius: 25px;
+            font-family: inherit;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .slider button:hover {
+            background: hsl(210, 63%, 44%);
+        }
+        .slider .image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            z-index: 0;
+            overflow: hidden;
+        }
+        .slider img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .slider .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.6);
+        }
+        .slider-wrapper .pagination {
+            position: absolute;
+            left: 7vw;
+            bottom: 40px;
+            z-index: 5;
+            color: #fff;
+            display: flex;
+            align-items: center;
+        }
+        .slider-wrapper .pagination > *:not(:last-child) {
+            margin-right: 10px;
+        }
+        .slider-wrapper .pagination > button {
+            background: #333;
+            border: none;
+            border-radius: 5px;
+            padding: 5px;
+            background: hsl(210, 63%, 54%);
+            cursor: pointer;
+        }
+        .slider-wrapper .pagination > button:hover {
+            background: hsl(210, 63%, 44%);
+        }
+        .slider-wrapper .pagination .pre {
+            transform: rotate(180deg);
+        }
+    </style>
+</head>
+<body>
+    <div class="slider-wrapper">
+        <div class="slider">
+            <div class="slide slide1">
+                <div class="text">
+                    <h2>Dummy Text 1</h2>
+                    <button type="button">
+                        Click Here
+                    </button>
+                </div>
+                <div class="image">
+                    <img src="1.jpeg" alt="">
+                    <div class="overlay"></div>
+                </div>
+            </div>
+            <div class="slide slide2">
+                <div class="text">
+                    <h2>Dummy Text 2</h2>
+                    <button type="button">
+                        Click Here
+                    </button>
+                </div>
+                <div class="image">
+                    <img src="2.jpg" alt="">
+                    <div class="overlay"></div>
+                </div>
+            </div>
+            <div class="slide slide3">
+                <div class="text">
+                    <h2>Dummy Text 3</h2>
+                    <button type="button">
+                        Click Here
+                    </button>
+                </div>
+                <div class="image">
+                    <img src="3.jpg" alt="">
+                    <div class="overlay"></div>
+                </div>
+            </div>
+        </div>
+        <div class="pagination">
+            <button type="button" class="pre">
+                <img src="arrow-right.svg" alt="Previous">
+            </button>
+            <div class="slide-number">
+                1 / 3
+            </div>
+            <button type="button" class="next">
+                <img src="arrow-right.svg" alt="Next">
+            </button>
+        </div>
+    </div>
+    <script>
+        const slider = document.querySelector('.slider'),
+              nextBtn = document.querySelector('.next'),
+              preBtn = document.querySelector('.pre'),
+              slideNumber = document.querySelector('.slide-number')
+              slideCount = slider.childElementCount;
+
+        let counter = 0;
+
+        nextBtn.addEventListener('pointerdown', moveNext);
+        preBtn.addEventListener('pointerdown', movePrevious);
+
+        function moveNext(e) {
+            counter++;
+            if (counter === slideCount - 1) {
+                this.style.cssText = 'opacity: 0.5; cursor: no-drop;';
+            }
+            if (counter > slideCount - 1) {
+                counter = slideCount - 1;
+                return;
+            }
+            preBtn.style = '';
+            slider.style.transform = `translateX(${-counter*100}%)`;
+            slideNumber.textContent = `${counter+1} / ${slideCount}`;
+        }
+
+        function movePrevious(e) {
+            counter--;
+            if (counter === 0) {
+                this.style.cssText = 'opacity: 0.5; cursor: no-drop;';
+            }
+            if (counter < 0) {
+                counter = 0;
+                return;
+            }
+            nextBtn.style = '';
+            slider.style.transform = `translateX(${-counter*100}%)`;
+            slideNumber.textContent = `${counter+1} / ${slideCount}`;
+        }
+    </script>
+</body>
+</html>
